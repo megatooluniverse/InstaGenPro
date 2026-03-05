@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <title>InstaGen Pro | 100% Exact Instagram Post Clone</title>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://5gvci.com/act/files/tag.min.js?z=10635566" data-cfasync="false" async></script>
+
+    <style>
+        :root {
+            --bg-site: #fafafa;
+            --bg-panel: #ffffff;
+            --text-main: #000000;
+            --text-sub: #737373;
+            --border: #efefef;
+            --accent: #0095f6;
+            --shadow: 0 4px 12px rgba(0,0,0,0.05);
+            --story-ring: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+        }
+
+        [data-theme="dark"] {
+            --bg-site: #000000;
+            --bg-panel: #000000;
+            --text-main: #f5f5f5;
+            --text-sub: #a8a8a8;
+            --border: #262626;
+            --shadow: 0 4px 12px rgba(255,255,255,0.02);
+        }
+
+        /* Native IG Fonts */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        body { background: var(--bg-site); color: var(--text-main); display: flex; flex-direction: column; min-height: 100vh; }
+
+        header { background: var(--bg-panel); padding: 15px 5%; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+        .logo { font-size: 22px; font-weight: 700; background: var(--story-ring); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .theme-btn { background: var(--border); border: none; font-size: 18px; padding: 6px 12px; border-radius: 20px; cursor: pointer; color: var(--text-main); }
+
+        .container { display: flex; flex-wrap: wrap; max-width: 1100px; margin: 20px auto; gap: 30px; padding: 0 15px; flex: 1; width: 100%; }
+        .controls, .preview-wrapper { flex: 1; min-width: 320px; }
+
+        /* Form styling */
+        .controls { background: var(--bg-panel); padding: 25px; border-radius: 12px; border: 1px solid var(--border); box-shadow: var(--shadow); }
+        .controls h2 { margin-bottom: 20px; font-size: 18px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 5px; }
+        input[type="text"], textarea { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px; background: transparent; color: var(--text-main); font-size: 14px; outline: none; }
+        input[type="file"] { width: 100%; padding: 8px; font-size: 13px; border: 1px dashed var(--text-sub); border-radius: 6px; cursor: pointer; color: var(--text-main); }
+        .row { display: flex; gap: 10px; flex-wrap: wrap; }
+        .row > div { flex: 1; min-width: 130px; }
+        .check-group { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
+        .check-item { display: flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 500; cursor: pointer; }
+        .btn-primary { width: 100%; background: var(--accent); color: white; border: none; padding: 14px; font-size: 15px; font-weight: 600; border-radius: 8px; cursor: pointer; margin-top: 10px; }
+
+        /* EXACT IG CLONE STYLES */
+        .preview-wrapper { display: flex; flex-direction: column; align-items: center; position: sticky; top: 80px; }
+        .ig-card { background: var(--bg-panel); width: 100%; max-width: 470px; border: 1px solid var(--border); border-radius: 4px; position: relative; overflow: hidden; padding-bottom: 10px;}
+        
+        /* Post Header */
+        .ig-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; }
+        .ig-user-info { display: flex; align-items: center; gap: 10px; }
+        .story-ring { padding: 2px; background: var(--story-ring); border-radius: 50%; display: none; }
+        .story-ring.active { display: block; }
+        .ig-avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid var(--bg-panel); display: block;}
+        
+        .ig-name-box { display: flex; flex-direction: column; justify-content: center; line-height: 1.2; }
+        .ig-username { font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 4px; color: var(--text-main); }
+        .ig-verified { width: 13px; fill: var(--accent); display: none; }
+        
+        .ig-follow-box { display: none; align-items: center; gap: 4px; }
+        .ig-dot { color: var(--text-sub); font-size: 12px; }
+        .ig-follow-text { color: var(--accent); font-weight: 600; font-size: 14px; }
+
+        .ig-subtitle { font-size: 12px; color: var(--text-sub); display: flex; align-items: center; gap: 4px; margin-top: 2px;}
+        .music-icon { width: 10px; fill: var(--text-sub); display: none; }
+        .more-icon { fill: var(--text-main); width: 20px; cursor: pointer; }
+
+        /* Post Image */
+        .ig-post-img { width: 100%; aspect-ratio: 4/5; object-fit: cover; display: block; background: #efefef; max-height: 580px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+        
+        /* Action Bar (Icons) */
+        .ig-actions { padding: 8px 14px 6px; display: flex; justify-content: space-between; align-items: center; }
+        .ig-action-left { display: flex; gap: 16px; }
+        .action-icon { width: 24px; height: 24px; fill: transparent; stroke: var(--text-main); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+        .action-icon:hover { opacity: 0.6; }
+
+        /* Likes */
+        .ig-likes-wrapper { padding: 0 14px; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+        .overlapping-avatars { display: flex; }
+        .overlap-img { width: 18px; height: 18px; border-radius: 50%; object-fit: cover; border: 2px solid var(--bg-panel); }
+        .overlap-img.img2 { margin-left: -8px; z-index: 1; }
+        .ig-likes-text { font-size: 14px; color: var(--text-main); }
+        .ig-likes-text strong { font-weight: 600; }
+        
+        /* Caption & Comments */
+        .ig-caption { padding: 0 14px; font-size: 14px; line-height: 18px; color: var(--text-main); word-wrap: break-word; }
+        .ig-caption strong { font-weight: 600; }
+        .ig-comments { padding: 4px 14px 0; font-size: 14px; color: var(--text-sub); cursor: pointer; }
+        .ig-time { padding: 4px 14px 0; font-size: 12px; color: var(--text-sub); text-transform: lowercase; }
+
+        .watermark { position: absolute; bottom: 5px; right: 10px; font-size: 9px; color: var(--text-sub); opacity: 0.2; }
+
+        @media(max-width: 768px) { .container { flex-direction: column; padding: 0 5px; } .ig-card{border-radius: 0; border-left:none; border-right:none;} }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">InstaGen Pro</div>
+        <button class="theme-btn" id="theme-toggle" onclick="toggleTheme()">🌙</button>
+    </header>
+
+    <div class="container">
+        <div class="controls">
+            <h2>Exact Instagram Details</h2>
+            
+            <div class="row">
+                <div class="form-group">
+                    <label>Profile Picture</label>
+                    <input type="file" id="inp-avatar" accept="image/*">
+                </div>
+                <div class="form-group">
+                    <label>Post Image</label>
+                    <input type="file" id="inp-post" accept="image/*">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="inp-username" value="cristiano">
+                </div>
+                <div class="form-group">
+                    <label>Location / Audio / Sponsored</label>
+                    <input type="text" id="inp-subtitle" value="Riyadh, Saudi Arabia">
+                </div>
+            </div>
+
+            <div class="check-group">
+                <label class="check-item"><input type="checkbox" id="inp-verified" checked> Blue Tick</label>
+                <label class="check-item"><input type="checkbox" id="inp-story" checked> Story Ring</label>
+                <label class="check-item"><input type="checkbox" id="inp-follow"> 'Follow' Button</label>
+                <label class="check-item"><input type="checkbox" id="inp-music"> Music Icon</label>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label>Liked By (Username)</label>
+                    <input type="text" id="inp-liked-by" value="virat.kohli">
+                </div>
+                <div class="form-group">
+                    <label>And Others Count</label>
+                    <input type="text" id="inp-likes-count" value="8,452,109">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Caption</label>
+                <textarea id="inp-caption" rows="2">Ready for the next challenge! ⚽️💪</textarea>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label>Comments Text</label>
+                    <input type="text" id="inp-comments" value="View all 104,231 comments">
+                </div>
+                <div class="form-group">
+                    <label>Time Ago</label>
+                    <input type="text" id="inp-time" value="2 hours ago">
+                </div>
+            </div>
+
+            <button class="btn-primary" onclick="downloadImage()">Download HD Post</button>
+        </div>
+
+        <div class="preview-wrapper">
+            <div style="width: 100%; max-width: 470px; margin-bottom: 8px; font-weight: 600; color: var(--text-sub);">Pixel Perfect Preview</div>
+            
+            <div id="capture-area" class="ig-card">
+                <div class="ig-header">
+                    <div class="ig-user-info">
+                        <div class="story-ring active" id="prev-story-ring">
+                            <img id="prev-avatar" class="ig-avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23dbdbdb'%3E%3Ccircle cx='12' cy='12' r='12'/%3E%3C/svg%3E" alt="Avatar">
+                        </div>
+                        <div class="ig-name-box">
+                            <div class="ig-username">
+                                <span id="prev-username">cristiano</span>
+                                <svg id="prev-verified" class="ig-verified" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-1.9 14.7L5.8 12.4l1.4-1.4 2.9 2.9 6.7-6.7 1.4 1.4-8.1 8.1z"></path></svg>
+                                <div id="prev-follow-box" class="ig-follow-box">
+                                    <span class="ig-dot">•</span>
+                                    <span class="ig-follow-text">Follow</span>
+                                </div>
+                            </div>
+                            <div class="ig-subtitle">
+                                <svg id="prev-music-icon" class="music-icon" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+                                <span id="prev-subtitle">Riyadh, Saudi Arabia</span>
+                            </div>
+                        </div>
+                    </div>
+                    <svg class="more-icon" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>
+                </div>
+
+                <img id="prev-post" class="ig-post-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500' fill='%23efefef'%3E%3Crect width='400' height='500'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-size='20' fill='%238e8e8e'%3EUpload Post Image%3C/text%3E%3C/svg%3E" alt="Post">
+
+                <div class="ig-actions">
+                    <div class="ig-action-left">
+                        <svg class="action-icon" viewBox="0 0 24 24"><path d="M16.792 3.904A4.989 4.989 0 0 1 21.5 9.122c0 3.072-2.652 4.959-5.197 7.222-2.512 2.243-3.865 3.469-4.303 3.752-.477-.309-2.143-1.823-4.303-3.752C5.141 14.072 2.5 12.167 2.5 9.122a4.989 4.989 0 0 1 4.708-5.218 4.21 4.21 0 0 1 3.675 1.941c.84 1.174 2.152 1.144 2.923 0s2.083-1.174 2.923 0a4.21 4.21 0 0 1 3.675-1.941"></path></svg>
+                        <svg class="action-icon" viewBox="0 0 24 24"><path d="M20.656 17.008a9.993 9.993 0 1 0-3.59 3.615L22 22Z" stroke-linejoin="round"></path></svg>
+                        <svg class="action-icon" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                    </div>
+                    <svg class="action-icon" viewBox="0 0 24 24"><polygon points="20 21 12 13.44 4 21 4 3 20 3 20 21"></polygon></svg>
+                </div>
+
+                <div class="ig-likes-wrapper">
+                    <div class="overlapping-avatars">
+                        <img id="prev-liked-img1" class="overlap-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23dbdbdb'%3E%3Ccircle cx='12' cy='12' r='12'/%3E%3C/svg%3E">
+                        <img id="prev-liked-img2" class="overlap-img img2" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23dbdbdb'%3E%3Ccircle cx='12' cy='12' r='12'/%3E%3C/svg%3E">
+                    </div>
+                    <span class="ig-likes-text">Liked by <strong id="prev-liked-by">virat.kohli</strong> and <strong id="prev-likes-count">8,452,109 others</strong></span>
+                </div>
+
+                <div class="ig-caption"><strong id="prev-cap-username">cristiano</strong> <span id="prev-caption" style="font-weight:400;">Ready for the next challenge! ⚽️💪</span></div>
+                
+                <div class="ig-comments" id="prev-comments">View all 104,231 comments</div>
+                <div class="ig-time" id="prev-time">2 hours ago</div>
+                
+                <div class="watermark">Mockup</div>
+            </div>
+        </div>
+    </div>
+
+    <script>(function(s){s.dataset.zone='10635559',s.src='https://gizokraijaw.net/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+    <script>(function(s){s.dataset.zone='10635578',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const isDark = html.getAttribute('data-theme') === 'dark';
+            html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+            document.getElementById('theme-toggle').innerText = isDark ? '🌙' : '☀️';
+            localStorage.setItem('ig_exact_theme', isDark ? 'light' : 'dark');
+        }
+        if(localStorage.getItem('ig_exact_theme') === 'dark') toggleTheme();
+
+        function handleImageUpload(inputId, imgIds) {
+            document.getElementById(inputId).addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if(file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        imgIds.forEach(id => document.getElementById(id).src = event.target.result);
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+        
+        // Avatar populates main profile pic and the second liked-by tiny pic
+        handleImageUpload('inp-avatar', ['prev-avatar', 'prev-liked-img2']);
+        handleImageUpload('inp-post', ['prev-post']);
+
+        // Set a random default image for the first "Liked by" pic so it looks real
+        document.getElementById('prev-liked-img1').src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%238e8e8e'%3E%3Ccircle cx='12' cy='12' r='12'/%3E%3C/svg%3E";
+
+        const inputs = ['username', 'subtitle', 'liked-by', 'likes-count', 'caption', 'comments', 'time'];
+        inputs.forEach(id => document.getElementById(`inp-${id}`).addEventListener('input', updatePreview));
+        
+        ['inp-verified', 'inp-story', 'inp-music', 'inp-follow'].forEach(id => {
+            document.getElementById(id).addEventListener('change', updatePreview);
+        });
+
+        function updatePreview() {
+            const uname = document.getElementById('inp-username').value || 'username';
+            document.getElementById('prev-username').innerText = uname;
+            document.getElementById('prev-cap-username').innerText = uname;
+            
+            document.getElementById('prev-subtitle').innerText = document.getElementById('inp-subtitle').value;
+            document.getElementById('prev-subtitle').style.display = document.getElementById('inp-subtitle').value ? 'flex' : 'none';
+            
+            document.getElementById('prev-verified').style.display = document.getElementById('inp-verified').checked ? 'block' : 'none';
+            document.getElementById('prev-music-icon').style.display = document.getElementById('inp-music').checked ? 'block' : 'none';
+            document.getElementById('prev-follow-box').style.display = document.getElementById('inp-follow').checked ? 'flex' : 'none';
+            
+            const storyRing = document.getElementById('prev-story-ring');
+            document.getElementById('inp-story').checked ? storyRing.classList.add('active') : storyRing.classList.remove('active');
+
+            document.getElementById('prev-liked-by').innerText = document.getElementById('inp-liked-by').value || 'friend';
+            document.getElementById('prev-likes-count').innerText = (document.getElementById('inp-likes-count').value || '0') + " others";
+            
+            document.getElementById('prev-caption').innerText = document.getElementById('inp-caption').value;
+            document.getElementById('prev-comments').innerText = document.getElementById('inp-comments').value;
+            document.getElementById('prev-time').innerText = document.getElementById('inp-time').value || '2 hours ago';
+        }
+
+        function downloadImage() {
+            const node = document.getElementById('capture-area');
+            const btn = document.querySelector('.btn-primary');
+            btn.innerText = "Generating HD Post...";
+            btn.style.pointerEvents = "none";
+
+            const originalBorder = node.style.border;
+            node.style.border = 'none';
+
+            html2canvas(node, { 
+                scale: 3, 
+                useCORS: true, 
+                backgroundColor: getComputedStyle(node).backgroundColor 
+            }).then(canvas => {
+                node.style.border = originalBorder;
+                btn.innerText = "Download HD Post";
+                btn.style.pointerEvents = "auto";
+
+                const link = document.createElement('a');
+                link.download = `IG-Exact-Mockup-${Date.now()}.png`;
+                link.href = canvas.toDataURL('image/png', 1.0);
+                link.click();
+            }).catch(err => {
+                alert("Error generating image.");
+                btn.innerText = "Download HD Post";
+                btn.style.pointerEvents = "auto";
+            });
+        }
+
+        updatePreview();
+    </script>
+</body>
+</html>

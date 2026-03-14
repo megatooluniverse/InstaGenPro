@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
@@ -7,7 +7,8 @@
     <title>InstaGen Pro | 100% Exact Instagram Post Clone</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://5gvci.com/act/files/tag.min.js?z=10635566" data-cfasync="false" async></script>
+    
+    <script src="https://5gvci.com/act/files/tag.min.js?z=10722092" data-cfasync="false" async></script>
 
     <style>
         :root {
@@ -30,33 +31,42 @@
             --shadow: 0 4px 12px rgba(255,255,255,0.02);
         }
 
-        /* Native IG Fonts */
+        /* Smooth Scrolling & Basic Setup */
+        html { scroll-behavior: smooth; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-        body { background: var(--bg-site); color: var(--text-main); display: flex; flex-direction: column; min-height: 100vh; }
+        body { background: var(--bg-site); color: var(--text-main); display: flex; flex-direction: column; min-height: 100vh; -webkit-font-smoothing: antialiased; transition: background-color 0.3s ease, color 0.3s ease; }
 
-        header { background: var(--bg-panel); padding: 15px 5%; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+        header { background: var(--bg-panel); padding: 15px 5%; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; transition: background-color 0.3s ease; }
         .logo { font-size: 22px; font-weight: 700; background: var(--story-ring); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .theme-btn { background: var(--border); border: none; font-size: 18px; padding: 6px 12px; border-radius: 20px; cursor: pointer; color: var(--text-main); }
+        .theme-btn { background: var(--border); border: none; font-size: 18px; padding: 6px 12px; border-radius: 20px; cursor: pointer; color: var(--text-main); transition: transform 0.2s ease, background-color 0.3s ease; }
+        .theme-btn:active { transform: scale(0.9); }
 
         .container { display: flex; flex-wrap: wrap; max-width: 1100px; margin: 20px auto; gap: 30px; padding: 0 15px; flex: 1; width: 100%; }
         .controls, .preview-wrapper { flex: 1; min-width: 320px; }
 
-        /* Form styling */
-        .controls { background: var(--bg-panel); padding: 25px; border-radius: 12px; border: 1px solid var(--border); box-shadow: var(--shadow); }
+        /* Form styling with smooth transitions */
+        .controls { background: var(--bg-panel); padding: 25px; border-radius: 12px; border: 1px solid var(--border); box-shadow: var(--shadow); transition: all 0.3s ease; }
         .controls h2 { margin-bottom: 20px; font-size: 18px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
         .form-group { margin-bottom: 15px; }
         label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 5px; }
-        input[type="text"], textarea { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px; background: transparent; color: var(--text-main); font-size: 14px; outline: none; }
-        input[type="file"] { width: 100%; padding: 8px; font-size: 13px; border: 1px dashed var(--text-sub); border-radius: 6px; cursor: pointer; color: var(--text-main); }
+        
+        input[type="text"], textarea { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px; background: transparent; color: var(--text-main); font-size: 14px; outline: none; transition: border-color 0.3s ease, box-shadow 0.3s ease; }
+        input[type="text"]:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0, 149, 246, 0.1); }
+        input[type="file"] { width: 100%; padding: 8px; font-size: 13px; border: 1px dashed var(--text-sub); border-radius: 6px; cursor: pointer; color: var(--text-main); transition: border-color 0.3s ease; }
+        input[type="file"]:hover { border-color: var(--accent); }
+        
         .row { display: flex; gap: 10px; flex-wrap: wrap; }
         .row > div { flex: 1; min-width: 130px; }
         .check-group { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 15px; }
-        .check-item { display: flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 500; cursor: pointer; }
-        .btn-primary { width: 100%; background: var(--accent); color: white; border: none; padding: 14px; font-size: 15px; font-weight: 600; border-radius: 8px; cursor: pointer; margin-top: 10px; }
+        .check-item { display: flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 500; cursor: pointer; user-select: none; }
+        
+        .btn-primary { width: 100%; background: var(--accent); color: white; border: none; padding: 14px; font-size: 15px; font-weight: 600; border-radius: 8px; cursor: pointer; margin-top: 10px; transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease; }
+        .btn-primary:hover { background-color: #0077c9; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0, 149, 246, 0.3); }
+        .btn-primary:active { transform: translateY(0); }
 
         /* EXACT IG CLONE STYLES */
         .preview-wrapper { display: flex; flex-direction: column; align-items: center; position: sticky; top: 80px; }
-        .ig-card { background: var(--bg-panel); width: 100%; max-width: 470px; border: 1px solid var(--border); border-radius: 4px; position: relative; overflow: hidden; padding-bottom: 10px;}
+        .ig-card { background: var(--bg-panel); width: 100%; max-width: 470px; border: 1px solid var(--border); border-radius: 4px; position: relative; overflow: hidden; padding-bottom: 10px; transition: background-color 0.3s ease, border-color 0.3s ease; }
         
         /* Post Header */
         .ig-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; }
@@ -83,8 +93,8 @@
         /* Action Bar (Icons) */
         .ig-actions { padding: 8px 14px 6px; display: flex; justify-content: space-between; align-items: center; }
         .ig-action-left { display: flex; gap: 16px; }
-        .action-icon { width: 24px; height: 24px; fill: transparent; stroke: var(--text-main); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
-        .action-icon:hover { opacity: 0.6; }
+        .action-icon { width: 24px; height: 24px; fill: transparent; stroke: var(--text-main); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; transition: opacity 0.2s ease, transform 0.2s ease; }
+        .action-icon:hover { opacity: 0.6; transform: scale(1.1); }
 
         /* Likes */
         .ig-likes-wrapper { padding: 0 14px; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
@@ -102,14 +112,24 @@
 
         .watermark { position: absolute; bottom: 5px; right: 10px; font-size: 9px; color: var(--text-sub); opacity: 0.2; }
 
-        @media(max-width: 768px) { .container { flex-direction: column; padding: 0 5px; } .ig-card{border-radius: 0; border-left:none; border-right:none;} }
+        /* Direct Link Footer Banner */
+        .ad-footer { margin-top: auto; width: 100%; background: var(--bg-panel); padding: 15px; text-align: center; border-top: 1px solid var(--border); box-shadow: 0 -2px 10px rgba(0,0,0,0.02); }
+        .ad-footer a { display: inline-block; background: var(--story-ring); color: white; padding: 10px 24px; border-radius: 20px; text-decoration: none; font-weight: bold; font-size: 14px; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .ad-footer a:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(220, 39, 67, 0.3); }
+
+        @media(max-width: 768px) { 
+            .container { flex-direction: column; padding: 0 5px; margin-top: 10px; } 
+            .ig-card { border-radius: 0; border-left: none; border-right: none; } 
+            .controls { padding: 15px; border-radius: 8px; }
+            .preview-wrapper { position: relative; top: 0; }
+        }
     </style>
 </head>
 <body>
 
     <header>
         <div class="logo">InstaGen Pro</div>
-        <button class="theme-btn" id="theme-toggle" onclick="toggleTheme()">🌙</button>
+        <button class="theme-btn" id="theme-toggle" onclick="toggleTheme()" aria-label="Toggle Theme">🌙</button>
     </header>
 
     <div class="container">
@@ -176,7 +196,7 @@
         </div>
 
         <div class="preview-wrapper">
-            <div style="width: 100%; max-width: 470px; margin-bottom: 8px; font-weight: 600; color: var(--text-sub);">Pixel Perfect Preview</div>
+            <div style="width: 100%; max-width: 470px; margin-bottom: 8px; font-weight: 600; color: var(--text-sub); text-align: center;">Pixel Perfect Preview</div>
             
             <div id="capture-area" class="ig-card">
                 <div class="ig-header">
@@ -231,8 +251,32 @@
         </div>
     </div>
 
-    <script>(function(s){s.dataset.zone='10635559',s.src='https://gizokraijaw.net/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
-    <script>(function(s){s.dataset.zone='10635578',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+    <footer class="ad-footer">
+        <a href="https://omg10.com/4/10722095" target="_blank" rel="noopener noreferrer">Exclusive Content & Features - Click Here</a>
+    </footer>
+
+    <script>(function(s){s.dataset.zone='10722097',s.src='https://gizokraijaw.net/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))</script>
+
+    <script>
+        (function initPopunderLogic() {
+            try {
+                const lastShown = localStorage.getItem('popunder_last_shown');
+                const currentTime = new Date().getTime();
+                const sixHoursInMs = 6 * 60 * 60 * 1000;
+
+                // Agar pehli baar hai ya 6 ghante beet chuke hain tabhi ad dikhao
+                if (!lastShown || (currentTime - parseInt(lastShown)) > sixHoursInMs) {
+                    const s = document.createElement('script');
+                    s.dataset.zone = '10722090';
+                    s.src = 'https://al5sm.com/tag.min.js';
+                    [document.documentElement, document.body].filter(Boolean).pop().appendChild(s);
+                    
+                    // Ad dikhane ke baad naya time save kar lo
+                    localStorage.setItem('popunder_last_shown', currentTime.toString());
+                }
+            } catch(e) { console.error("Ad logic error:", e); }
+        })();
+    </script>
 
     <script>
         function toggleTheme() {
@@ -257,11 +301,9 @@
             });
         }
         
-        // Avatar populates main profile pic and the second liked-by tiny pic
         handleImageUpload('inp-avatar', ['prev-avatar', 'prev-liked-img2']);
         handleImageUpload('inp-post', ['prev-post']);
 
-        // Set a random default image for the first "Liked by" pic so it looks real
         document.getElementById('prev-liked-img1').src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%238e8e8e'%3E%3Ccircle cx='12' cy='12' r='12'/%3E%3C/svg%3E";
 
         const inputs = ['username', 'subtitle', 'liked-by', 'likes-count', 'caption', 'comments', 'time'];
